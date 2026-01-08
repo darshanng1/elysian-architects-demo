@@ -56,9 +56,13 @@ const portfolioData = {
 
 /* ===================== APP ===================== */
 export default function App() {
-  const [language] = useState<"en">("en");
-
-  const t = (key: string) => {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+const toggleTheme = () =>
+  setTheme((prev) => (prev === "light" ? "dark" : "light"));
+const [language, setLanguage] = useState<"en" | "kn">("en");
+const toggleLanguage = () =>
+  setLanguage((prev) => (prev === "en" ? "kn" : "en"))
+   const t = (key: string) => {
     const keys = key.split(".");
     let value: any = translations[language];
     for (const k of keys) value = value?.[k];
