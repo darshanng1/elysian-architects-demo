@@ -118,12 +118,15 @@ export default function App() {
           contact: t("nav.contact"),
         }}
       />
+       <section
+  id="hero"
+  className="min-h-screen flex items-center justify-center pt-24 px-6 bg-cover bg-center"
+  style={{
+    backgroundImage: "url('/images/hero.png')",
+  }}
+>
 
-      {/* HERO */}
-      <section
-        id="hero"
-        className="min-h-screen flex items-center justify-center pt-24 px-6"
-      >
+     
         <div className="text-center max-w-4xl">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
             {t("hero.title")}
