@@ -68,8 +68,14 @@ export default function App() {
   return (
     <div className="min-h-screen">
       {/* ✅ NEW NAVBAR COMPONENT */}
-      <Navbar />
+     <Navbar
+  language={language}
+  toggleLanguage={toggleLanguage}
+  theme={theme}
+  toggleTheme={toggleTheme}
+/>
 
+      
       {/* HERO */}
       <section id="hero" className="min-h-screen flex items-center justify-center pt-24 px-6">
         <div className="text-center max-w-4xl">
