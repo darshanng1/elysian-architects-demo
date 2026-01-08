@@ -1,5 +1,14 @@
 import { useState } from 'react'
+useEffect(() => {
+  if (theme === "dark") {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+}, [theme]);
+
 import Navbar from "./components/Navbar";
+import { useEffect } from "react";
 
 /* ===================== TRANSLATIONS ===================== */
 const translations = {
