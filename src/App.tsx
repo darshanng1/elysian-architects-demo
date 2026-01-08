@@ -1,19 +1,16 @@
-import { useState } from 'react'
-useEffect(() => {
-  if (theme === "dark") {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
-  }
-}, [theme]);
-
+import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
-import { useEffect } from "react";
 
 /* ===================== TRANSLATIONS ===================== */
 const translations = {
   en: {
-    nav: { home: "Home", portfolio: "Portfolio", gallery: "Architect Gallery", about: "About", contact: "Contact" },
+    nav: {
+      home: "Home",
+      portfolio: "Portfolio",
+      gallery: "Architect Gallery",
+      about: "About",
+      contact: "Contact",
+    },
     hero: {
       title: "Architecture that Breathes",
       subtitle: "Sculpting spaces where light, form, and function converge",
@@ -45,7 +42,16 @@ const translations = {
       },
     },
   },
-};
+  kn: {
+    nav: {
+      home: "ಮುಖಪುಟ",
+      portfolio: "ಪೋರ್ಟ್‌ಫೋಲಿಯೋ",
+      gallery: "ವಾಸ್ತುಶಿಲ್ಪಿ ಗ್ಯಾಲರಿ",
+      about: "ನಮ್ಮ ಬಗ್ಗೆ",
+      contact: "ಸಂಪರ್ಕಿಸಿ",
+    },
+  },
+} as const;
 
 /* ===================== DATA ===================== */
 const portfolioData = {
@@ -53,47 +59,78 @@ const portfolioData = {
     {
       id: "residential",
       name: "Residential",
-      image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
+      image:
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
     },
     {
       id: "commercial",
       name: "Commercial",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800",
+      image:
+        "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800",
     },
   ],
 };
 
 /* ===================== APP ===================== */
 export default function App() {
+  /* ---------- STATE ---------- */
   const [theme, setTheme] = useState<"light" | "dark">("light");
-const toggleTheme = () =>
-  setTheme((prev) => (prev === "light" ? "dark" : "light"));
-const [language, setLanguage] = useState<"en" | "kn">("en");
-const toggleLanguage = () =>
-  setLanguage((prev) => (prev === "en" ? "kn" : "en"))
-   const t = (key: string) => {
+  const [language, setLanguage] = useState<"en" | "kn">("en");
+
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+
+  const toggleLanguage = () =>
+    setLanguage((prev) => (prev === "en" ? "kn" : "en"));
+
+  /* ---------- EFFECT ---------- */
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
+
+  /* ---------- TRANSLATION HELPER ---------- */
+  const t = (key: string) => {
     const keys = key.split(".");
-    let value: any = translations[language as keyof typeof translations];
-    for (const k of keys) value = value?.[k];
+    let value: any = translations[language];
+    for (const k of keys) {
+      value = value?.[k];
+    }
     return value ?? key;
   };
 
+  /* ---------- RENDER ---------- */
   return (
     <div className="min-h-screen">
-      {/* ✅ NEW NAVBAR COMPONENT */}
-     <Navbar
-  language={language}
-  toggleLanguage={toggleLanguage}
-  theme={theme}
-  toggleTheme={toggleTheme}
-/>
+      <Navbar
+        language={language}
+        toggleLanguage={toggleLanguage}
+        theme={theme}
+        toggleTheme={toggleTheme}
+        labels={{
+          home: t("nav.home"),
+          portfolio: t("nav.portfolio"),
+          gallery: t("nav.gallery"),
+          about: t("nav.about"),
+          contact: t("nav.contact"),
+        }}
+      />
 
-      
       {/* HERO */}
-      <section id="hero" className="min-h-screen flex items-center justify-center pt-24 px-6">
+      <section
+        id="hero"
+        className="min-h-screen flex items-center justify-center pt-24 px-6"
+      >
         <div className="text-center max-w-4xl">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">{t("hero.title")}</h1>
-          <p className="text-xl text-stone-600 mb-10">{t("hero.subtitle")}</p>
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            {t("hero.title")}
+          </h1>
+          <p className="text-xl text-stone-600 mb-10">
+            {t("hero.subtitle")}
+          </p>
           <a
             href="#portfolio"
             className="inline-block px-8 py-4 bg-stone-900 text-white rounded-full font-bold"
@@ -105,20 +142,28 @@ const toggleLanguage = () =>
 
       {/* PORTFOLIO */}
       <section id="portfolio" className="py-24 px-6">
-        <h2 className="text-4xl font-bold text-center mb-12">{t("portfolio.heading")}</h2>
+        <h2 className="text-4xl font-bold text-center mb-12">
+          {t("portfolio.heading")}
+        </h2>
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {portfolioData.categories.map((c) => (
             <div key={c.id} className="overflow-hidden rounded-xl">
-              <img src={c.image} alt={c.name} className="w-full h-full object-cover" />
+              <img
+                src={c.image}
+                alt={c.name}
+                className="w-full h-full object-cover"
+              />
             </div>
           ))}
         </div>
       </section>
 
       {/* ABOUT */}
-      <section id="about" className="py-24 px-6 bg-stone-50">
+      <section id="about" className="py-24 px-6 bg-stone-50 dark:bg-stone-900">
         <div className="max-w-4xl mx-auto text-center space-y-6">
-          <h2 className="text-4xl font-bold">{t("philosophy.heading")}</h2>
+          <h2 className="text-4xl font-bold">
+            {t("philosophy.heading")}
+          </h2>
           <p>{t("philosophy.p1")}</p>
           <p>{t("philosophy.p2")}</p>
           <p>{t("philosophy.p3")}</p>
@@ -127,18 +172,35 @@ const toggleLanguage = () =>
 
       {/* GALLERY */}
       <section id="gallery" className="py-24 px-6">
-        <h2 className="text-4xl font-bold text-center mb-12">{t("gallery.heading")}</h2>
+        <h2 className="text-4xl font-bold text-center mb-12">
+          {t("gallery.heading")}
+        </h2>
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="py-24 px-6 bg-stone-50">
+      <section
+        id="contact"
+        className="py-24 px-6 bg-stone-50 dark:bg-stone-900"
+      >
         <div className="max-w-xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-4">{t("contact.heading")}</h2>
+          <h2 className="text-4xl font-bold mb-4">
+            {t("contact.heading")}
+          </h2>
           <p className="mb-8">{t("contact.subheading")}</p>
           <form className="space-y-4">
-            <input className="w-full p-3 border rounded" placeholder={t("contact.form.name")} />
-            <input className="w-full p-3 border rounded" placeholder={t("contact.form.email")} />
-            <textarea className="w-full p-3 border rounded" rows={4} placeholder={t("contact.form.message")} />
+            <input
+              className="w-full p-3 border rounded"
+              placeholder={t("contact.form.name")}
+            />
+            <input
+              className="w-full p-3 border rounded"
+              placeholder={t("contact.form.email")}
+            />
+            <textarea
+              className="w-full p-3 border rounded"
+              rows={4}
+              placeholder={t("contact.form.message")}
+            />
             <button className="w-full p-3 bg-stone-900 text-white rounded font-bold">
               {t("contact.form.submit")}
             </button>
