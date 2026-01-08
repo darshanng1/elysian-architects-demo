@@ -64,7 +64,7 @@ const toggleLanguage = () =>
   setLanguage((prev) => (prev === "en" ? "kn" : "en"))
    const t = (key: string) => {
     const keys = key.split(".");
-    let value: any = translations[language];
+    let value: any = translations[language as keyof typeof translations];
     for (const k of keys) value = value?.[k];
     return value ?? key;
   };
