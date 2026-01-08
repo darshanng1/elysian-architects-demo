@@ -5,6 +5,13 @@ type NavbarProps = {
   toggleLanguage: () => void;
   theme: "light" | "dark";
   toggleTheme: () => void;
+  labels: {
+    home: string;
+    portfolio: string;
+    gallery: string;
+    about: string;
+    contact: string;
+  };
 };
 
 export default function Navbar({
